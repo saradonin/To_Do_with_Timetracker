@@ -20,43 +20,73 @@ function apiListTasks() {
 }
 
 function renderTask(taskId, title, description, status) {
-  const section = document.createElement('section');
-  section.className = 'card mt-5 shadow-sm';
-  document.querySelector('main').appendChild(section);
+    const section = document.createElement('section');
+    section.className = 'card mt-5 shadow-sm';
+    document.querySelector('main').appendChild(section);
 
-  const headerDiv = document.createElement('div');
-  headerDiv.className = 'card-header d-flex justify-content-between align-items-center';
-  section.appendChild(headerDiv);
+    const headerDiv = document.createElement('div');
+    headerDiv.className = 'card-header d-flex justify-content-between align-items-center';
+    section.appendChild(headerDiv);
 
-  const headerLeftDiv = document.createElement('div');
-  headerDiv.appendChild(headerLeftDiv);
+    const headerLeftDiv = document.createElement('div');
+    headerDiv.appendChild(headerLeftDiv);
 
-  const h5 = document.createElement('h5');
-  h5.innerText = title;
-  headerLeftDiv.appendChild(h5);
+    const h5 = document.createElement('h5');
+    h5.innerText = title;
+    headerLeftDiv.appendChild(h5);
 
-  const h6 = document.createElement('h6');
-  h6.className = 'card-subtitle text-muted';
-  h6.innerText = description;
-  headerLeftDiv.appendChild(h6);
+    const h6 = document.createElement('h6');
+    h6.className = 'card-subtitle text-muted';
+    h6.innerText = description;
+    headerLeftDiv.appendChild(h6);
 
-  const headerRightDiv = document.createElement('div');
-  headerDiv.appendChild(headerRightDiv);
+    const headerRightDiv = document.createElement('div');
+    headerDiv.appendChild(headerRightDiv);
 
-  if(status == 'open') {
-    const finishButton = document.createElement('button');
-    finishButton.className = 'btn btn-dark btn-sm js-task-open-only';
-    finishButton.innerText = 'Finish';
-    headerRightDiv.appendChild(finishButton);
-  }
+    if (status == 'open') {
+        const finishButton = document.createElement('button');
+        finishButton.className = 'btn btn-dark btn-sm js-task-open-only';
+        finishButton.innerText = 'Finish';
+        headerRightDiv.appendChild(finishButton);
+    }
 
-  const deleteButton = document.createElement('button');
-  deleteButton.className = 'btn btn-outline-danger btn-sm ml-2';
-  deleteButton.innerText = 'Delete';
-  headerRightDiv.appendChild(deleteButton);
+    const deleteButton = document.createElement('button');
+    deleteButton.className = 'btn btn-outline-danger btn-sm ml-2';
+    deleteButton.innerText = 'Delete';
+    headerRightDiv.appendChild(deleteButton);
+
+    // list added
+    const operationsList = document.createElement('ul');
+    operationsList.className = 'list-group list-group-flush';
+    section.appendChild(operationsList);
+
+    // form
+    const inputDiv = document.createElement('div');
+    inputDiv.className = 'card-body';
+    section.appendChild(inputDiv);
+
+    const operationsForm = document.createElement('form');
+    inputDiv.appendChild(operationsForm);
+
+    const formInnerDiv = document.createElement('div');
+    operationsForm.appendChild(formInnerDiv);
+
+    const inputField = document.createElement('input');
+    inputField.className = 'form-control';
+    inputField.type = 'text';
+    inputField.minLength = '5';
+    inputField.placeholder = 'Operations description';
+    formInnerDiv.appendChild(inputField);
+
+    const addOpButtonDiv = document.createElement('div');
+    addOpButtonDiv.className = 'input-group-append';
+    formInnerDiv.appendChild(addOpButtonDiv);
+
+    const addOpButton = document.createElement('button');
+    addOpButton.className = 'btn btn-info';
+    addOpButton.innerText = 'Add'
+
 }
-
-
 
 
 function apiCreateTask(title, description) {
