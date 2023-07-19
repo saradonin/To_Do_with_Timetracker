@@ -42,7 +42,20 @@ function renderTask(taskId, title, description, status) {
 
   const headerRightDiv = document.createElement('div');
   headerDiv.appendChild(headerRightDiv);
+
+  if(status == 'open') {
+    const finishButton = document.createElement('button');
+    finishButton.className = 'btn btn-dark btn-sm js-task-open-only';
+    finishButton.innerText = 'Finish';
+    headerRightDiv.appendChild(finishButton);
+  }
+
+  const deleteButton = document.createElement('button');
+  deleteButton.className = 'btn btn-outline-danger btn-sm ml-2';
+  deleteButton.innerText = 'Delete';
+  headerRightDiv.appendChild(deleteButton);
 }
+
 
 
 
