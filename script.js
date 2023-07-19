@@ -1,6 +1,9 @@
 const apikey = '93a5a0f8-07f6-41f7-ab39-c61a1207f499';
 const apihost = 'https://todo-api.coderslab.pl';
 
+/*
+function definitions
+ */
 
 function apiListTasks() {
     // GET method
@@ -20,10 +23,12 @@ function apiListTasks() {
 }
 
 function renderTask(taskId, title, description, status) {
+    // main task section
     const section = document.createElement('section');
     section.className = 'card mt-5 shadow-sm';
     document.querySelector('main').appendChild(section);
 
+    // headers
     const headerDiv = document.createElement('div');
     headerDiv.className = 'card-header d-flex justify-content-between align-items-center';
     section.appendChild(headerDiv);
@@ -43,6 +48,7 @@ function renderTask(taskId, title, description, status) {
     const headerRightDiv = document.createElement('div');
     headerDiv.appendChild(headerRightDiv);
 
+    // task control buttons
     if (status == 'open') {
         const finishButton = document.createElement('button');
         finishButton.className = 'btn btn-dark btn-sm js-task-open-only';
@@ -55,12 +61,12 @@ function renderTask(taskId, title, description, status) {
     deleteButton.innerText = 'Delete';
     headerRightDiv.appendChild(deleteButton);
 
-    // list added
+    // operations list
     const operationsList = document.createElement('ul');
     operationsList.className = 'list-group list-group-flush';
     section.appendChild(operationsList);
 
-    // form
+    // add operations form
     const inputDiv = document.createElement('div');
     inputDiv.className = 'card-body';
     section.appendChild(inputDiv);
@@ -111,13 +117,15 @@ function apiCreateTask(title, description) {
     )
 }
 
-//
+/*
+events and function calls
+ */
+
 document.addEventListener('DOMContentLoaded', function () {
 
 
     apiListTasks().then(
         function (response) {
-
             // "response" zawiera obiekt z kluczami "error" i "data" (zob. wyżej)
             // "data" to tablica obiektów-zadań
             // uruchamiamy funkcję renderTask dla każdego zadania jakie dał nam backend
