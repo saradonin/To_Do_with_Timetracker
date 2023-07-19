@@ -20,15 +20,29 @@ function apiListTasks() {
 }
 
 function renderTask(taskId, title, description, status) {
-  const section = document.createElement("section");
+  const section = document.createElement('section');
   section.className = 'card mt-5 shadow-sm';
-
-  // tylko na chwilę ustawimy taką treść:
-  section.innerText = 'Tytuł: ' + title + ', opis: ' + description + ', status: ' + status;
-
   document.querySelector('main').appendChild(section);
-}
 
+  const headerDiv = document.createElement('div');
+  headerDiv.className = 'card-header d-flex justify-content-between align-items-center';
+  section.appendChild(headerDiv);
+
+  const headerLeftDiv = document.createElement('div');
+  headerDiv.appendChild(headerLeftDiv);
+
+  const h5 = document.createElement('h5');
+  h5.innerText = title;
+  headerLeftDiv.appendChild(h5);
+
+  const h6 = document.createElement('h6');
+  h6.className = 'card-subtitle text-muted';
+  h6.innerText = description;
+  headerLeftDiv.appendChild(h6);
+
+  const headerRightDiv = document.createElement('div');
+  headerDiv.appendChild(headerRightDiv);
+}
 
 
 
@@ -73,11 +87,11 @@ document.addEventListener('DOMContentLoaded', function () {
     );
 
 
-    apiCreateTask('Przykładowy tytuł', 'Przykładowy opis').then(
-        function (response) {
-            console.log('Odpowiedź z serwera to:', response);
-        }
-    );
+    // apiCreateTask('Przykładowy tytuł', 'Przykładowy opis').then(
+    //     function (response) {
+    //         console.log('Odpowiedź z serwera to:', response);
+    //     }
+    // );
 
 
 });
