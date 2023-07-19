@@ -90,7 +90,8 @@ function renderTask(taskId, title, description, status) {
 
     const addOpButton = document.createElement('button');
     addOpButton.className = 'btn btn-info';
-    addOpButton.innerText = 'Add'
+    addOpButton.innerText = 'Add';
+    addOpButtonDiv.appendChild(addOpButton);
 
 }
 
