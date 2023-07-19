@@ -74,19 +74,20 @@ function renderTask(taskId, title, description, status) {
     const operationsForm = document.createElement('form');
     inputDiv.appendChild(operationsForm);
 
-    const formInnerDiv = document.createElement('div');
-    operationsForm.appendChild(formInnerDiv);
+    const formInputGroup = document.createElement('div');
+    formInputGroup.className = 'input-group';
+    operationsForm.appendChild(formInputGroup);
 
     const inputField = document.createElement('input');
     inputField.className = 'form-control';
     inputField.type = 'text';
     inputField.minLength = '5';
     inputField.placeholder = 'Operations description';
-    formInnerDiv.appendChild(inputField);
+    formInputGroup.appendChild(inputField);
 
     const addOpButtonDiv = document.createElement('div');
     addOpButtonDiv.className = 'input-group-append';
-    formInnerDiv.appendChild(addOpButtonDiv);
+    formInputGroup.appendChild(addOpButtonDiv);
 
     const addOpButton = document.createElement('button');
     addOpButton.className = 'btn btn-info';
