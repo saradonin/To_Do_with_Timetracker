@@ -77,6 +77,11 @@ function renderTask(taskId, title, description, status) {
         const finishButton = addDOMElement(headerRightDiv, "button", "btn btn-dark btn-sm js-task-open-only", "Finish");
     }
     const deleteButton = addDOMElement(headerRightDiv, "button", "btn btn-outline-danger btn-sm ml-2", "Delete");
+    deleteButton.addEventListener("click", function () {
+        apiDeleteTask(taskId).then(
+            section.remove()
+        )
+    })
 
     // operations list
     const operationsList = addDOMElement(section, "ul", "list-group list-group-flush");
@@ -141,7 +146,22 @@ function apiCreateTask(title, description) {
 }
 
 function apiDeleteTask(taskId) {
-
+    return fetch(
+        apihost + '/api/tasks/' + taskId,
+        {
+            method: "DELETE",
+            headers: {
+                'Authorization': apikey,
+            },
+        }
+    ).then(
+        function (resp) {
+            if (!resp.ok) {
+                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+            }
+            return resp.json();
+        }
+    )
 }
 
 /*
