@@ -22,6 +22,22 @@ function apiListTasks() {
     )
 }
 
+function apiListOperationsForTask(taskId) {
+    return fetch(
+        apihost + '/api/tasks/' + taskId + "/operations",
+        {
+            headers: {Authorization: apikey}
+        }
+    ).then(
+        function (resp) {
+            if (!resp.ok) {
+                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+            }
+            return resp.json();
+        }
+    );
+}
+
 function addDOMElement(parent, tag, classname = null, innerText = null) {
     // DOM element constructor
     const element = document.createElement(tag);
@@ -68,72 +84,80 @@ function renderTask(taskId, title, description, status) {
     const addOpButton = addDOMElement(addOpButtonDiv, "button", "btn btn-info", "Add");
 }
 
+function renderOperation(operationsList, status, operationId, operationDescription, timeSpent) {
+    // const li = document.createElement('li');
+    // li.className = 'list-group-item d-flex justify-content-between align-items-center';
+    // // operationsList to lista <ul>
+    // operationsList.appendChild(li);
+    const li = addDOMElement(operationsList, "li", "list-group-item d-flex justify-content-between align-items-center");
 
-function apiCreateTask(title, description) {
-    // uses POST method
-    return fetch(
-        apihost + '/api/tasks',
-        {
-            method: "POST",
-            headers: {
-                'Authorization': apikey,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({title: title, description: description, status: 'open'})
-        }
-    ).then(
-        function (resp) {
-            if (!resp.ok) {
-                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+    // const descriptionDiv = document.createElement('div');
+    // descriptionDiv.innerText = operationDescription;
+    // li.appendChild(descriptionDiv);
+    const descriptionDiv = addDOMElement(li, "div", null, operationDescription);
+
+    // const time = document.createElement('span');
+    // time.className = 'badge badge-success badge-pill ml-2';
+    // time.innerText = timeSpent + 'm';
+    // descriptionDiv.appendChild(time);
+    const time = addDOMElement(descriptionDiv, "span", "badge badge-success badge-pill ml-2", timeSpent + 'm');
+
+    const buttonsDiv = addDOMElement(li, "div");
+    if (status == "open") {
+        const plus15MButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+15m");
+        const plus1HButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+1h");
+    }
+    const deleteOpButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-danger btn-sm", "Delete");
+
+    function apiCreateTask(title, description) {
+        // uses POST method
+        return fetch(
+            apihost + '/api/tasks',
+            {
+                method: "POST",
+                headers: {
+                    'Authorization': apikey,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({title: title, description: description, status: 'open'})
             }
-            return resp.json();
-        }
-    )
-}
-
-function apiListOperationsForTask(taskId) {
-    return fetch(
-        apihost + '/api/tasks' + taskId + "/operations",
-        {
-            headers: {Authorization: apikey}
-        }
-    ).then(
-        function (resp) {
-            if (!resp.ok) {
-                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
-            }
-            return resp.json();
-        }
-    );
-}
-
-
-/*
-events and function calls
- */
-
-document.addEventListener('DOMContentLoaded', function () {
-
-
-    apiListTasks().then(
-        function (response) {
-            // "response" zawiera obiekt z kluczami "error" i "data" (zob. wyżej)
-            // "data" to tablica obiektów-zadań
-            // uruchamiamy funkcję renderTask dla każdego zadania jakie dał nam backend
-            response.data.forEach(
-                function (task) {
-                    renderTask(task.id, task.title, task.description, task.status);
+        ).then(
+            function (resp) {
+                if (!resp.ok) {
+                    alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
                 }
-            );
-        }
-    );
+                return resp.json();
+            }
+        )
+    }
 
 
-    // apiCreateTask('Przykładowy tytuł', 'Przykładowy opis').then(
-    //     function (response) {
-    //         console.log('Odpowiedź z serwera to:', response);
-    //     }
-    // );
+    /*
+    events and function calls
+     */
+
+    document.addEventListener('DOMContentLoaded', function () {
 
 
-});
+        apiListTasks().then(
+            function (response) {
+                // "response" zawiera obiekt z kluczami "error" i "data" (zob. wyżej)
+                // "data" to tablica obiektów-zadań
+                // uruchamiamy funkcję renderTask dla każdego zadania jakie dał nam backend
+                response.data.forEach(
+                    function (task) {
+                        renderTask(task.id, task.title, task.description, task.status);
+                    }
+                );
+            }
+        );
+
+
+        // apiCreateTask('Przykładowy tytuł', 'Przykładowy opis').then(
+        //     function (response) {
+        //         console.log('Odpowiedź z serwera to:', response);
+        //     }
+        // );
+
+
+    });
