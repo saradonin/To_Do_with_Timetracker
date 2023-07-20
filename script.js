@@ -41,7 +41,7 @@ function apiListOperationsForTask(taskId) {
 function timeConverter(minutesTotal) {
     let hours = Math.floor(minutesTotal / 60);
     const min = minutesTotal % 60;
-    if (hours === 0 ) {
+    if (hours === 0) {
         return min
     }
     return hours + "h " + min
@@ -73,7 +73,7 @@ function renderTask(taskId, title, description, status) {
     const headerRightDiv = addDOMElement(headerDiv, "div");
 
     // task control buttons
-    if (status === 'open') {
+    if (status == 'open') {
         const finishButton = addDOMElement(headerRightDiv, "button", "btn btn-dark btn-sm js-task-open-only", "Finish");
     }
     const deleteButton = addDOMElement(headerRightDiv, "button", "btn btn-outline-danger btn-sm ml-2", "Delete");
@@ -110,7 +110,7 @@ function renderOperation(operationsList, status, operationId, operationDescripti
     const time = addDOMElement(descriptionDiv, "span", "badge badge-success badge-pill ml-2", timeSpent + 'm');
 
     const buttonsDiv = addDOMElement(li, "div");
-    if (status === "open") {
+    if (status == "open") {
         // TODO fix bug not showing these buttons on open tasks
         const plus15MButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+15m");
         const plus1HButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+1h");
@@ -140,6 +140,9 @@ function apiCreateTask(title, description) {
     )
 }
 
+function apiDeleteTask(taskId) {
+
+}
 
 /*
 events and function calls
@@ -159,12 +162,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     );
 
+    // adding new task event
+    const newTaskForm = document.querySelector(".js-task-adding-form");
+    const newTaskTitle = newTaskForm.querySelector('[name="title"]');
+    const newTaskDescription = newTaskForm.querySelector('[name="description"]');
+    const newTaskButton = newTaskForm.querySelector("button");
 
-    // apiCreateTask('Przykładowy tytuł', 'Przykładowy opis').then(
-    //     function (response) {
-    //         console.log('Odpowiedź z serwera to:', response);
-    //     }
-    // );
+    newTaskButton.addEventListener("click", function (e) {
+        e.preventDefault()
 
+        const title = newTaskTitle.value
+        const description = newTaskDescription.value
 
+        apiCreateTask(title, description).then(
+            function (response) {
+                console.log(response)
+            }
+        )
+    })
 });
