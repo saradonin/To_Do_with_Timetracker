@@ -114,13 +114,15 @@ function renderOperation(operationsList, status, operationId, operationDescripti
     const descriptionDiv = addDOMElement(li, "div", null, operationDescription);
     const time = addDOMElement(descriptionDiv, "span", "badge badge-success badge-pill ml-2", timeSpent + 'm');
 
-    const buttonsDiv = addDOMElement(li, "div");
-    if (status == "open") {
+
+    if (status !== "open") {
         // TODO fix bug not showing these buttons on open tasks
+        const buttonsDiv = addDOMElement(li, "div", "js-task-open-only");
         const plus15MButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+15m");
         const plus1HButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+1h");
+        const deleteOpButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-danger btn-sm", "Delete");
     }
-    const deleteOpButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-danger btn-sm", "Delete");
+
 }
 
 function apiCreateTask(title, description) {
@@ -199,5 +201,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log(response)
             }
         )
+        location.reload()
     })
 });
