@@ -38,6 +38,15 @@ function apiListOperationsForTask(taskId) {
     );
 }
 
+function timeConverter(minutesTotal) {
+    let hours = Math.floor(minutesTotal / 60);
+    const min = minutesTotal % 60;
+    if (hours === 0 ) {
+        return min
+    }
+    return hours + "h " + min
+}
+
 function addDOMElement(parent, tag, classname = null, innerText = null) {
     // DOM element constructor
     const element = document.createElement(tag);
@@ -64,7 +73,7 @@ function renderTask(taskId, title, description, status) {
     const headerRightDiv = addDOMElement(headerDiv, "div");
 
     // task control buttons
-    if (status == 'open') {
+    if (status === 'open') {
         const finishButton = addDOMElement(headerRightDiv, "button", "btn btn-dark btn-sm js-task-open-only", "Finish");
     }
     const deleteButton = addDOMElement(headerRightDiv, "button", "btn btn-outline-danger btn-sm ml-2", "Delete");
@@ -75,7 +84,7 @@ function renderTask(taskId, title, description, status) {
         function (response) {
             response.data.forEach(
                 function (operation) {
-                    renderOperation(operationsList, operation.id, status, operation.description, operation.timeSpent);
+                    renderOperation(operationsList, operation.id, status, operation.description, timeConverter(operation.timeSpent));
                 }
             );
         }
@@ -101,7 +110,8 @@ function renderOperation(operationsList, status, operationId, operationDescripti
     const time = addDOMElement(descriptionDiv, "span", "badge badge-success badge-pill ml-2", timeSpent + 'm');
 
     const buttonsDiv = addDOMElement(li, "div");
-    if (status == "open") {
+    if (status === "open") {
+        // TODO fix bug not showing these buttons on open tasks
         const plus15MButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+15m");
         const plus1HButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+1h");
     }
@@ -140,9 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     apiListTasks().then(
         function (response) {
-            // "response" zawiera obiekt z kluczami "error" i "data" (zob. wyżej)
-            // "data" to tablica obiektów-zadań
-            // uruchamiamy funkcję renderTask dla każdego zadania jakie dał nam backend
+            // render for each task
             response.data.forEach(
                 function (task) {
                     renderTask(task.id, task.title, task.description, task.status);
