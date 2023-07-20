@@ -22,6 +22,13 @@ function apiListTasks() {
     )
 }
 
+function addDOMElement(parent, tag, classname) {
+    const element = document.createElement(tag);
+    element.className = classname;
+    parent.appendChild(element)
+    return element
+}
+
 function renderTask(taskId, title, description, status) {
     // main task section
     const section = document.createElement('section');
@@ -85,9 +92,11 @@ function renderTask(taskId, title, description, status) {
     inputField.placeholder = 'Operations description';
     formInputGroup.appendChild(inputField);
 
-    const addOpButtonDiv = document.createElement('div');
-    addOpButtonDiv.className = 'input-group-append';
-    formInputGroup.appendChild(addOpButtonDiv);
+    // const addOpButtonDiv = document.createElement('div');
+    // addOpButtonDiv.className = 'input-group-append';
+    // formInputGroup.appendChild(addOpButtonDiv);
+    const addOpButtonDiv = addDOMElement(formInputGroup, "div", "input-group-append")
+
 
     const addOpButton = document.createElement('button');
     addOpButton.className = 'btn btn-info';
