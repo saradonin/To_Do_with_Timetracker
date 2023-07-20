@@ -71,6 +71,15 @@ function renderTask(taskId, title, description, status) {
 
     // operations list
     const operationsList = addDOMElement(section, "ul", "list-group list-group-flush");
+    apiListOperationsForTask(taskId).then(
+        function (response) {
+            response.data.forEach(
+                function (operation) {
+                    renderOperation(operationsList, operation.id, status, operation.description, operation.timeSpent);
+                }
+            );
+        }
+    )
 
     // add operations form
     const inputDiv = addDOMElement(section, "div", "card-body");
@@ -83,6 +92,7 @@ function renderTask(taskId, title, description, status) {
     const addOpButtonDiv = addDOMElement(formInputGroup, "div", "input-group-append");
     const addOpButton = addDOMElement(addOpButtonDiv, "button", "btn btn-info", "Add");
 }
+
 
 function renderOperation(operationsList, status, operationId, operationDescription, timeSpent) {
     // const li = document.createElement('li');
@@ -108,56 +118,57 @@ function renderOperation(operationsList, status, operationId, operationDescripti
         const plus1HButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+1h");
     }
     const deleteOpButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-danger btn-sm", "Delete");
+}
 
-    function apiCreateTask(title, description) {
-        // uses POST method
-        return fetch(
-            apihost + '/api/tasks',
-            {
-                method: "POST",
-                headers: {
-                    'Authorization': apikey,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({title: title, description: description, status: 'open'})
+function apiCreateTask(title, description) {
+    // uses POST method
+    return fetch(
+        apihost + '/api/tasks',
+        {
+            method: "POST",
+            headers: {
+                'Authorization': apikey,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({title: title, description: description, status: 'open'})
+        }
+    ).then(
+        function (resp) {
+            if (!resp.ok) {
+                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
             }
-        ).then(
-            function (resp) {
-                if (!resp.ok) {
-                    alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+            return resp.json();
+        }
+    )
+}
+
+
+/*
+events and function calls
+ */
+
+document.addEventListener('DOMContentLoaded', function () {
+
+
+    apiListTasks().then(
+        function (response) {
+            // "response" zawiera obiekt z kluczami "error" i "data" (zob. wyżej)
+            // "data" to tablica obiektów-zadań
+            // uruchamiamy funkcję renderTask dla każdego zadania jakie dał nam backend
+            response.data.forEach(
+                function (task) {
+                    renderTask(task.id, task.title, task.description, task.status);
                 }
-                return resp.json();
-            }
-        )
-    }
+            );
+        }
+    );
 
 
-    /*
-    events and function calls
-     */
-
-    document.addEventListener('DOMContentLoaded', function () {
-
-
-        apiListTasks().then(
-            function (response) {
-                // "response" zawiera obiekt z kluczami "error" i "data" (zob. wyżej)
-                // "data" to tablica obiektów-zadań
-                // uruchamiamy funkcję renderTask dla każdego zadania jakie dał nam backend
-                response.data.forEach(
-                    function (task) {
-                        renderTask(task.id, task.title, task.description, task.status);
-                    }
-                );
-            }
-        );
+    // apiCreateTask('Przykładowy tytuł', 'Przykładowy opis').then(
+    //     function (response) {
+    //         console.log('Odpowiedź z serwera to:', response);
+    //     }
+    // );
 
 
-        // apiCreateTask('Przykładowy tytuł', 'Przykładowy opis').then(
-        //     function (response) {
-        //         console.log('Odpowiedź z serwera to:', response);
-        //     }
-        // );
-
-
-    });
+});
