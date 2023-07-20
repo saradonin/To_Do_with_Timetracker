@@ -95,21 +95,9 @@ function renderTask(taskId, title, description, status) {
 
 
 function renderOperation(operationsList, status, operationId, operationDescription, timeSpent) {
-    // const li = document.createElement('li');
-    // li.className = 'list-group-item d-flex justify-content-between align-items-center';
-    // // operationsList to lista <ul>
-    // operationsList.appendChild(li);
+
     const li = addDOMElement(operationsList, "li", "list-group-item d-flex justify-content-between align-items-center");
-
-    // const descriptionDiv = document.createElement('div');
-    // descriptionDiv.innerText = operationDescription;
-    // li.appendChild(descriptionDiv);
     const descriptionDiv = addDOMElement(li, "div", null, operationDescription);
-
-    // const time = document.createElement('span');
-    // time.className = 'badge badge-success badge-pill ml-2';
-    // time.innerText = timeSpent + 'm';
-    // descriptionDiv.appendChild(time);
     const time = addDOMElement(descriptionDiv, "span", "badge badge-success badge-pill ml-2", timeSpent + 'm');
 
     const buttonsDiv = addDOMElement(li, "div");
