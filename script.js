@@ -2,7 +2,7 @@ const apikey = '93a5a0f8-07f6-41f7-ab39-c61a1207f499';
 const apihost = 'https://todo-api.coderslab.pl';
 
 /*
-function definitions
+functions definitions
  */
 
 function apiListTasks() {
@@ -90,6 +90,23 @@ function apiCreateTask(title, description) {
         }
     )
 }
+
+function apiListOperationsForTask(taskId) {
+    return fetch(
+        apihost + '/api/tasks' + taskId + "/operations",
+        {
+            headers: {Authorization: apikey}
+        }
+    ).then(
+        function (resp) {
+            if (!resp.ok) {
+                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+            }
+            return resp.json();
+        }
+    );
+}
+
 
 /*
 events and function calls
