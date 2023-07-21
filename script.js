@@ -183,6 +183,46 @@ function apiCreateTask(title, description) {
     )
 }
 
+function apiUpdateTask(taskId, title, description, status) {
+    return fetch(
+        apihost + '/api/tasks/' + taskId,
+        {
+            method: "PUT",
+            headers: {
+                Authorization: apikey,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({title: title, description: description, status: status}),
+        }
+    ).then(
+        function (resp) {
+            if (!resp.ok) {
+                alert('An error occurred while updating task. Open devtools and tab Network/Network, and look for the cause.');
+            }
+            return resp.json();
+        }
+    );
+}
+
+function apiDeleteTask(taskId) {
+    return fetch(
+        apihost + '/api/tasks/' + taskId,
+        {
+            method: "DELETE",
+            headers: {
+                'Authorization': apikey,
+            },
+        }
+    ).then(
+        function (resp) {
+            if (!resp.ok) {
+                alert('An error occurred while deleting task. Open devtools and tab Network/Network, and look for the cause.');
+            }
+            return resp.json();
+        }
+    )
+}
+
 function apiCreateOperationForTask(taskId, description) {
     // uses POST method
     return fetch(
@@ -226,24 +266,6 @@ function apiUpdateOperation(operationId, description, timeSpent) {
     )
 }
 
-function apiDeleteTask(taskId) {
-    return fetch(
-        apihost + '/api/tasks/' + taskId,
-        {
-            method: "DELETE",
-            headers: {
-                'Authorization': apikey,
-            },
-        }
-    ).then(
-        function (resp) {
-            if (!resp.ok) {
-                alert('An error occurred while deleting task. Open devtools and tab Network/Network, and look for the cause.');
-            }
-            return resp.json();
-        }
-    )
-}
 
 function apiDeleteOperation(operationId) {
     return fetch(
