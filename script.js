@@ -42,9 +42,9 @@ function convertTime(minutesTotal) {
     let hours = Math.floor(minutesTotal / 60);
     const min = minutesTotal % 60;
     if (hours === 0) {
-        return min
+        return min + "m"
     }
-    return hours + "h " + min
+    return hours + "h " + min + "m"
 }
 
 function addDOMElement(parent, tag, classname = null, innerText = null) {
@@ -73,7 +73,7 @@ function renderTask(taskId, title, description, status) {
     const headerRightDiv = addDOMElement(headerDiv, "div");
 
     // task control buttons
-    if (status == "open") {
+    if (status === "open") {
         const finishButton = addDOMElement(headerRightDiv, "button", "btn btn-dark btn-sm js-task-open-only", "Finish");
     }
     const deleteButton = addDOMElement(headerRightDiv, "button", "btn btn-outline-danger btn-sm ml-2", "Delete");
@@ -126,7 +126,7 @@ function renderOperation(operationsList, status, operationId, operationDescripti
     const time = addDOMElement(descriptionDiv, "span", "badge badge-success badge-pill ml-2", timeSpent + 'm');
 
 
-    if (status == "open") {
+    if (status === "open") {
         const buttonsDiv = addDOMElement(li, "div", "js-task-open-only");
 
         const plus15minButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+15m");
