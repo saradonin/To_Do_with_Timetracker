@@ -38,7 +38,7 @@ function apiListOperationsForTask(taskId) {
     );
 }
 
-function timeConverter(minutesTotal) {
+function convertTime(minutesTotal) {
     let hours = Math.floor(minutesTotal / 60);
     const min = minutesTotal % 60;
     if (hours === 0) {
@@ -89,7 +89,7 @@ function renderTask(taskId, title, description, status) {
         function (response) {
             response.data.forEach(
                 function (operation) {
-                    renderOperation(operationsList, status, operation.id, operation.description, timeConverter(operation.timeSpent));
+                    renderOperation(operationsList, status, operation.id, operation.description, convertTime(operation.timeSpent));
                 }
             );
         }
@@ -135,6 +135,29 @@ function apiCreateTask(title, description) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({title: title, description: description, status: 'open'})
+        }
+    ).then(
+        function (resp) {
+            if (!resp.ok) {
+                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+            }
+            return resp.json();
+        }
+    )
+}
+
+// TODO in progress
+function apiCreateOperationForTask(taskId, description) {
+    // uses POST method
+    return fetch(
+        apihost + '/api/tasks/' + taskId + '/operations',
+        {
+            method: "POST",
+            headers: {
+                'Authorization': apikey,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({description: description, timeSpent: 0})
         }
     ).then(
         function (resp) {
