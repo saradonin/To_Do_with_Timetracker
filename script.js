@@ -49,7 +49,7 @@ function apiListTasks() {
 }
 
 function renderTask(taskId, title, description, status) {
-    // main task section
+    // renders task section
     const main = document.querySelector('main');
     const section = addDOMElement(main, "section", "card mt-5 shadow-sm");
 
@@ -196,6 +196,7 @@ function apiListOperationsForTask(taskId) {
 }
 
 function renderOperation(operationsList, status, operationId, operationDescription, timeSpent) {
+    // renders operations section for each task
 
     const li = addDOMElement(operationsList, "li", "list-group-item d-flex justify-content-between align-items-center");
     const descriptionDiv = addDOMElement(li, "div", null, operationDescription);
