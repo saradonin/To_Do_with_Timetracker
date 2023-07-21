@@ -113,6 +113,7 @@ function renderTask(taskId, title, description, status) {
                     renderOperation(operationsList, status, response.data.id, response.data.description, response.data.timeSpent)
                 }
             )
+            inputField.value = ""
         })
     }
 }
