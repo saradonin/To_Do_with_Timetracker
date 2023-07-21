@@ -77,11 +77,7 @@ function renderTask(taskId, title, description, status) {
         const finishButton = addDOMElement(headerRightDiv, "button", "btn btn-dark btn-sm js-task-open-only", "Finish");
         finishButton.addEventListener("click", function () {
             apiUpdateTask(taskId, title, description, "closed");
-            section.querySelectorAll(".js-task-open-only").forEach(function (element){
-                element.remove()
-                // TODO fix form returning after refresh
-            })
-            section.querySelector(".card-body").forEach( function (element) {
+            section.querySelectorAll(".js-task-open-only").forEach(function (element) {
                 element.remove()
             })
         })
@@ -107,25 +103,28 @@ function renderTask(taskId, title, description, status) {
     )
 
     // add operations form
-    const formDiv = addDOMElement(section, "div", "card-body js-task-open-only");
-    const operationsForm = addDOMElement(formDiv, "form");
-    const formInputGroup = addDOMElement(operationsForm, "div", "input-group");
-    const inputField = addDOMElement(formInputGroup, "input", "form-control");
-    inputField.type = 'text';
-    inputField.minLength = '5';
-    inputField.placeholder = 'Operations description';
-    const addOpButtonDiv = addDOMElement(formInputGroup, "div", "input-group-append");
-    const addOpButton = addDOMElement(addOpButtonDiv, "button", "btn btn-info", "Add");
+    if (status === "open") {
+        const formDiv = addDOMElement(section, "div", "card-body js-task-open-only");
+        const operationsForm = addDOMElement(formDiv, "form");
+        const formInputGroup = addDOMElement(operationsForm, "div", "input-group");
+        const inputField = addDOMElement(formInputGroup, "input", "form-control");
+        inputField.type = 'text';
+        inputField.minLength = '5';
+        inputField.placeholder = 'Operations description';
+        const addOpButtonDiv = addDOMElement(formInputGroup, "div", "input-group-append");
+        const addOpButton = addDOMElement(addOpButtonDiv, "button", "btn btn-info", "Add");
 
-    // handling of adding new operation to existing task
-    operationsForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-        apiCreateOperationForTask(taskId, inputField.value).then(
-            function (response) {
-                renderOperation(operationsList, status, response.data.id, response.data.description, response.data.timeSpent)
-            }
-        )
-    })
+        // handling of adding new operation to existing task
+        operationsForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            apiCreateOperationForTask(taskId, inputField.value).then(
+                function (response) {
+                    renderOperation(operationsList, status, response.data.id, response.data.description, response.data.timeSpent)
+                }
+            )
+        })
+    }
+
 }
 
 
