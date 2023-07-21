@@ -197,6 +197,27 @@ function apiDeleteTask(taskId) {
     )
 }
 
+function apiDeleteOperation(operationId) {
+    return fetch(
+        apihost + '/api/operations/' + operationId,
+        {
+            method: "DELETE",
+            headers: {
+                'Authorization': apikey,
+            },
+        }
+    ).then(
+        function (resp) {
+            if (!resp.ok) {
+                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+            }
+            return resp.json();
+        }
+    )
+}
+
+
+
 /*
 events and function calls
  */
