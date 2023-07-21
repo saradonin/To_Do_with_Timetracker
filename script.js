@@ -79,6 +79,7 @@ function renderTask(taskId, title, description, status) {
             apiUpdateTask(taskId, title, description, "closed").then()
             section.querySelectorAll(".js-task-open-only").forEach(function (element){
                 element.remove()
+                // TODO fix form returning after refresh
             })
         })
     }
@@ -177,7 +178,7 @@ function apiCreateTask(title, description) {
                 'Authorization': apikey,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({title: title, description: description, status: 'open'})
+            body: JSON.stringify({title: title, description: description, status: "open"})
         }
     ).then(
         function (resp) {
@@ -252,6 +253,7 @@ function apiCreateOperationForTask(taskId, description) {
 }
 
 function apiUpdateOperation(operationId, description, timeSpent) {
+    // TODO fix error while adding time
     return fetch(
         apihost + '/api/operations/' + operationId,
         {
@@ -271,7 +273,6 @@ function apiUpdateOperation(operationId, description, timeSpent) {
         }
     )
 }
-
 
 function apiDeleteOperation(operationId) {
     return fetch(
