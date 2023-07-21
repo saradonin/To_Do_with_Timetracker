@@ -1,51 +1,9 @@
-const apikey = '93a5a0f8-07f6-41f7-ab39-c61a1207f499';
-const apihost = 'https://todo-api.coderslab.pl';
+const apikey = "93a5a0f8-07f6-41f7-ab39-c61a1207f499";
+const apihost = "https://todo-api.coderslab.pl";
 
 /*
-functions definitions
+general purpose functions
  */
-
-function apiListTasks() {
-    // GET method
-    return fetch(
-        apihost + '/api/tasks',
-        {
-            headers: {Authorization: apikey}
-        }
-    ).then(
-        function (resp) {
-            if (!resp.ok) {
-                alert('An error occurred while listing tasks. Open devtools and tab Network/Network, and look for the cause.');
-            }
-            return resp.json();
-        }
-    )
-}
-
-function apiListOperationsForTask(taskId) {
-    return fetch(
-        apihost + '/api/tasks/' + taskId + "/operations",
-        {
-            headers: {Authorization: apikey}
-        }
-    ).then(
-        function (resp) {
-            if (!resp.ok) {
-                alert('An error occurred while listing operations. Open devtools and tab Network/Network, and look for the cause.');
-            }
-            return resp.json();
-        }
-    );
-}
-
-function convertTime(timeSpent) {
-    let hours = Math.floor(timeSpent / 60);
-    const min = timeSpent % 60;
-    if (hours === 0) {
-        return min + "m"
-    }
-    return hours + "h " + min + "m"
-}
 
 function addDOMElement(parent, tag, classname = null, innerText = null) {
     // DOM element constructor
@@ -58,6 +16,36 @@ function addDOMElement(parent, tag, classname = null, innerText = null) {
     }
     parent.appendChild(element);
     return element
+}
+
+function convertTime(timeSpent) {
+    // converts time as number to user-friendly string
+    let hours = Math.floor(timeSpent / 60);
+    const min = timeSpent % 60;
+    if (hours === 0) {
+        return min + "m"
+    }
+    return hours + "h " + min + "m"
+}
+
+/*
+task related functions
+ */
+
+function apiListTasks() {
+    return fetch(
+        apihost + "/api/tasks",
+        {
+            headers: {Authorization: apikey}
+        }
+    ).then(
+        function (resp) {
+            if (!resp.ok) {
+                alert("An error occurred while listing tasks. Open devtools and tab Network/Network, and look for the cause.");
+            }
+            return resp.json();
+        }
+    )
 }
 
 function renderTask(taskId, title, description, status) {
@@ -83,8 +71,8 @@ function renderTask(taskId, title, description, status) {
         })
     }
     const deleteButton = addDOMElement(headerRightDiv, "button", "btn btn-outline-danger btn-sm ml-2", "Delete");
-    // delete task event
     deleteButton.addEventListener("click", function () {
+        // delete task
         apiDeleteTask(taskId).then(
             section.remove()
         )
@@ -114,7 +102,7 @@ function renderTask(taskId, title, description, status) {
         const addOpButtonDiv = addDOMElement(formInputGroup, "div", "input-group-append");
         const addOpButton = addDOMElement(addOpButtonDiv, "button", "btn btn-info", "Add");
 
-        // handling of adding new operation to existing task
+        // handles adding new operation to existing task
         operationsForm.addEventListener("submit", function (e) {
             e.preventDefault();
             apiCreateOperationForTask(taskId, inputField.value).then(
@@ -124,56 +112,11 @@ function renderTask(taskId, title, description, status) {
             )
         })
     }
-
-}
-
-
-function renderOperation(operationsList, status, operationId, operationDescription, timeSpent) {
-
-    const li = addDOMElement(operationsList, "li", "list-group-item d-flex justify-content-between align-items-center");
-    const descriptionDiv = addDOMElement(li, "div", null, operationDescription);
-    const time = addDOMElement(descriptionDiv, "span", "badge badge-success badge-pill ml-2", convertTime(timeSpent));
-
-
-    if (status === "open") {
-        const buttonsDiv = addDOMElement(li, "div", "js-task-open-only");
-
-        const plus15minButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+15m");
-        plus15minButton.addEventListener("click", function () {
-            // add 15 minutes on click
-            apiUpdateOperation(operationId, operationDescription, timeSpent + 15).then(
-                function (response) {
-                    time.innerText = convertTime(response.data.timeSpent);
-                    timeSpent = response.data.timeSpent;
-                }
-            )
-        })
-
-        const plus1hButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+1h");
-        plus1hButton.addEventListener("click", function () {
-            // add 60 minutes on click
-            apiUpdateOperation(operationId, operationDescription, timeSpent + 60).then(
-                function (response) {
-                    time.innerText = convertTime(response.data.timeSpent);
-                    timeSpent = response.data.timeSpent;
-                }
-            )
-        })
-
-        const deleteOpButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-danger btn-sm", "Delete");
-        // delete operation event
-        deleteOpButton.addEventListener("click", function () {
-            apiDeleteOperation(operationId).then(
-                li.remove()
-            )
-        })
-    }
 }
 
 function apiCreateTask(title, description) {
-    // uses POST method
     return fetch(
-        apihost + '/api/tasks',
+        apihost + "/api/tasks",
         {
             method: "POST",
             headers: {
@@ -185,7 +128,7 @@ function apiCreateTask(title, description) {
     ).then(
         function (resp) {
             if (!resp.ok) {
-                alert('An error occurred while creating task. Open devtools and tab Network/Network, and look for the cause.');
+                alert("An error occurred while creating task. Open devtools and tab Network/Network, and look for the cause.");
             }
             return resp.json();
         }
@@ -194,7 +137,7 @@ function apiCreateTask(title, description) {
 
 function apiUpdateTask(taskId, title, description, status) {
     return fetch(
-        apihost + '/api/tasks/' + taskId,
+        apihost + "/api/tasks/" + taskId,
         {
             method: "PUT",
             headers: {
@@ -206,7 +149,7 @@ function apiUpdateTask(taskId, title, description, status) {
     ).then(
         function (resp) {
             if (!resp.ok) {
-                alert('An error occurred while updating task. Open devtools and tab Network/Network, and look for the cause.');
+                alert("An error occurred while updating task. Open devtools and tab Network/Network, and look for the cause.");
             }
             return resp.json();
         }
@@ -215,7 +158,7 @@ function apiUpdateTask(taskId, title, description, status) {
 
 function apiDeleteTask(taskId) {
     return fetch(
-        apihost + '/api/tasks/' + taskId,
+        apihost + "/api/tasks/" + taskId,
         {
             method: "DELETE",
             headers: {
@@ -225,17 +168,77 @@ function apiDeleteTask(taskId) {
     ).then(
         function (resp) {
             if (!resp.ok) {
-                alert('An error occurred while deleting task. Open devtools and tab Network/Network, and look for the cause.');
+                alert("An error occurred while deleting task. Open devtools and tab Network/Network, and look for the cause.");
             }
             return resp.json();
         }
     )
 }
 
-function apiCreateOperationForTask(taskId, description) {
-    // uses POST method
+/*
+operations related functions
+ */
+
+function apiListOperationsForTask(taskId) {
     return fetch(
-        apihost + '/api/tasks/' + taskId + '/operations',
+        apihost + "/api/tasks/" + taskId + "/operations",
+        {
+            headers: {Authorization: apikey}
+        }
+    ).then(
+        function (resp) {
+            if (!resp.ok) {
+                alert("An error occurred while listing operations. Open devtools and tab Network/Network, and look for the cause.");
+            }
+            return resp.json();
+        }
+    );
+}
+
+function renderOperation(operationsList, status, operationId, operationDescription, timeSpent) {
+
+    const li = addDOMElement(operationsList, "li", "list-group-item d-flex justify-content-between align-items-center");
+    const descriptionDiv = addDOMElement(li, "div", null, operationDescription);
+    const time = addDOMElement(descriptionDiv, "span", "badge badge-success badge-pill ml-2", convertTime(timeSpent));
+
+    // buttons active for open tasks
+    if (status === "open") {
+        const buttonsDiv = addDOMElement(li, "div", "js-task-open-only");
+
+        // adds 15 minutes on click
+        const plus15minButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+15m");
+        plus15minButton.addEventListener("click", function () {
+            apiUpdateOperation(operationId, operationDescription, timeSpent + 15).then(
+                function (response) {
+                    time.innerText = convertTime(response.data.timeSpent);
+                    timeSpent = response.data.timeSpent;
+                }
+            )
+        })
+        // adds 60 minutes on click
+        const plus1hButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+1h");
+        plus1hButton.addEventListener("click", function () {
+            apiUpdateOperation(operationId, operationDescription, timeSpent + 60).then(
+                function (response) {
+                    time.innerText = convertTime(response.data.timeSpent);
+                    timeSpent = response.data.timeSpent;
+                }
+            )
+        })
+
+        // delete operation
+        const deleteOpButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-danger btn-sm", "Delete");
+        deleteOpButton.addEventListener("click", function () {
+            apiDeleteOperation(operationId).then(
+                li.remove()
+            )
+        })
+    }
+}
+
+function apiCreateOperationForTask(taskId, description) {
+    return fetch(
+        apihost + "/api/tasks/" + taskId + "/operations",
         {
             method: "POST",
             headers: {
@@ -247,7 +250,7 @@ function apiCreateOperationForTask(taskId, description) {
     ).then(
         function (resp) {
             if (!resp.ok) {
-                alert('An error occurred while creating operation. Open devtools and tab Network/Network, and look for the cause.');
+                alert("An error occurred while creating operation. Open devtools and tab Network/Network, and look for the cause.");
             }
             return resp.json();
         }
@@ -256,7 +259,7 @@ function apiCreateOperationForTask(taskId, description) {
 
 function apiUpdateOperation(operationId, description, timeSpent) {
     return fetch(
-        apihost + '/api/operations/' + operationId,
+        apihost + "/api/operations/" + operationId,
         {
             method: "PUT",
             headers: {
@@ -268,7 +271,7 @@ function apiUpdateOperation(operationId, description, timeSpent) {
     ).then(
         function (resp) {
             if (!resp.ok) {
-                alert('An error occurred while updating task. Open devtools and tab Network/Network, and look for the cause.');
+                alert("An error occurred while updating task. Open devtools and tab Network/Network, and look for the cause.");
             }
             return resp.json();
         }
@@ -277,7 +280,7 @@ function apiUpdateOperation(operationId, description, timeSpent) {
 
 function apiDeleteOperation(operationId) {
     return fetch(
-        apihost + '/api/operations/' + operationId,
+        apihost + "/api/operations/" + operationId,
         {
             method: "DELETE",
             headers: {
@@ -287,20 +290,18 @@ function apiDeleteOperation(operationId) {
     ).then(
         function (resp) {
             if (!resp.ok) {
-                alert('An error occurred while deleting operation. Open devtools and tab Network/Network, and look for the cause.');
+                alert("An error occurred while deleting operation. Open devtools and tab Network/Network, and look for the cause.");
             }
             return resp.json();
         }
     )
 }
 
-
 /*
-events and function calls
+function calls
  */
 
-document.addEventListener('DOMContentLoaded', function () {
-
+document.addEventListener("DOMContentLoaded", function () {
 
     apiListTasks().then(
         function (response) {
@@ -313,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     );
 
-    // handling of adding new task
+    // handles adding new task
     const newTaskForm = document.querySelector(".js-task-adding-form");
     const newTaskTitle = newTaskForm.querySelector('[name="title"]');
     const newTaskDescription = newTaskForm.querySelector('[name="description"]');
@@ -330,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log(response)
             }
         )
-        // reload to refresh task list
+        // reloads page to refresh task list
         location.reload()
     })
 });
