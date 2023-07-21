@@ -64,10 +64,13 @@ function renderTask(taskId, title, description, status) {
     if (status === "open") {
         const finishButton = addDOMElement(headerRightDiv, "button", "btn btn-dark btn-sm js-task-open-only", "Finish");
         finishButton.addEventListener("click", function () {
-            apiUpdateTask(taskId, title, description, "closed");
-            section.querySelectorAll(".js-task-open-only").forEach(function (element) {
-                element.remove()
-            })
+            apiUpdateTask(taskId, title, description, "closed").then(
+                function () {
+                    section.querySelectorAll(".js-task-open-only").forEach(function (element) {
+                        element.remove()
+                    })
+                }
+            )
         })
     }
     const deleteButton = addDOMElement(headerRightDiv, "button", "btn btn-outline-danger btn-sm ml-2", "Delete");
@@ -96,14 +99,14 @@ function renderTask(taskId, title, description, status) {
         const operationsForm = addDOMElement(formDiv, "form");
         const formInputGroup = addDOMElement(operationsForm, "div", "input-group");
         const inputField = addDOMElement(formInputGroup, "input", "form-control");
-        inputField.type = 'text';
+        inputField.type = "text";
         inputField.minLength = '5';
-        inputField.placeholder = 'Operations description';
+        inputField.placeholder = "Operations description";
         const addOpButtonDiv = addDOMElement(formInputGroup, "div", "input-group-append");
         const addOpButton = addDOMElement(addOpButtonDiv, "button", "btn btn-info", "Add");
 
         // handles adding new operation to existing task
-        operationsForm.addEventListener("submit", function (e) {
+        addOpButton.addEventListener("click", function (e) {
             e.preventDefault();
             apiCreateOperationForTask(taskId, inputField.value).then(
                 function (response) {
