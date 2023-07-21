@@ -105,6 +105,15 @@ function renderTask(taskId, title, description, status) {
     inputField.placeholder = 'Operations description';
     const addOpButtonDiv = addDOMElement(formInputGroup, "div", "input-group-append");
     const addOpButton = addDOMElement(addOpButtonDiv, "button", "btn btn-info", "Add");
+    // handling of adding new operation to existing task
+    operationsForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        apiCreateOperationForTask(taskId, inputField.value).then(
+            function (response) {
+                renderOperation(operationsList, status, response.data.id, response.data.description, response.data.timeSpent)
+            }
+        )
+    })
 }
 
 
