@@ -184,6 +184,27 @@ function apiCreateOperationForTask(taskId, description) {
     )
 }
 
+function apiUpdateOperation(operationId, description, timeSpent) {
+    return fetch(
+        apihost + '/api/operations/' + operationId,
+        {
+            method: "PUT",
+            headers: {
+                'Authorization': apikey,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({description: description, timeSpent: timeSpent})
+        }
+    ).then(
+        function (resp) {
+            if (!resp.ok) {
+                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+            }
+            return resp.json();
+        }
+    )
+}
+
 function apiDeleteTask(taskId) {
     return fetch(
         apihost + '/api/tasks/' + taskId,
