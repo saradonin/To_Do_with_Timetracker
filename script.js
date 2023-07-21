@@ -97,7 +97,7 @@ function renderTask(taskId, title, description, status) {
         function (response) {
             response.data.forEach(
                 function (operation) {
-                    renderOperation(operationsList, status, operation.id, operation.description, convertTime(operation.timeSpent));
+                    renderOperation(operationsList, status, operation.id, operation.description, operation.timeSpent);
                 }
             );
         }
@@ -130,7 +130,7 @@ function renderOperation(operationsList, status, operationId, operationDescripti
 
     const li = addDOMElement(operationsList, "li", "list-group-item d-flex justify-content-between align-items-center");
     const descriptionDiv = addDOMElement(li, "div", null, operationDescription);
-    const time = addDOMElement(descriptionDiv, "span", "badge badge-success badge-pill ml-2", timeSpent);
+    const time = addDOMElement(descriptionDiv, "span", "badge badge-success badge-pill ml-2", convertTime(timeSpent));
 
 
     if (status === "open") {
@@ -253,7 +253,6 @@ function apiCreateOperationForTask(taskId, description) {
 }
 
 function apiUpdateOperation(operationId, description, timeSpent) {
-    // TODO fix error while adding time
     return fetch(
         apihost + '/api/operations/' + operationId,
         {
