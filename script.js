@@ -75,6 +75,12 @@ function renderTask(taskId, title, description, status) {
     // task control buttons
     if (status === "open") {
         const finishButton = addDOMElement(headerRightDiv, "button", "btn btn-dark btn-sm js-task-open-only", "Finish");
+        finishButton.addEventListener("click", function () {
+            apiUpdateTask(taskId, title, description, "closed").then()
+            section.querySelectorAll(".js-task-open-only").forEach(function (element){
+                element.remove()
+            })
+        })
     }
     const deleteButton = addDOMElement(headerRightDiv, "button", "btn btn-outline-danger btn-sm ml-2", "Delete");
     // delete task event
@@ -97,7 +103,7 @@ function renderTask(taskId, title, description, status) {
     )
 
     // add operations form
-    const inputDiv = addDOMElement(section, "div", "card-body");
+    const inputDiv = addDOMElement(section, "div", "card-body js-task-open-only");
     const operationsForm = addDOMElement(inputDiv, "form");
     const formInputGroup = addDOMElement(operationsForm, "div", "input-group");
     const inputField = addDOMElement(formInputGroup, "input", "form-control");
