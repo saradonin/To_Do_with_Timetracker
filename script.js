@@ -128,8 +128,29 @@ function renderOperation(operationsList, status, operationId, operationDescripti
 
     if (status == "open") {
         const buttonsDiv = addDOMElement(li, "div", "js-task-open-only");
+
         const plus15minButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+15m");
+        plus15minButton.addEventListener("click", function () {
+            // add 15 minutes on click
+            apiUpdateOperation(operationId, operationDescription, timeSpent + 15).then(
+                function (response) {
+                    time.innerText = convertTime(response.data.timeSpent);
+                    timeSpent = response.data.timeSpent;
+                }
+            )
+        })
+
         const plus1hButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+1h");
+        plus1hButton.addEventListener("click", function () {
+            // add 60 minutes on click
+            apiUpdateOperation(operationId, operationDescription, timeSpent + 60).then(
+                function (response) {
+                    time.innerText = convertTime(response.data.timeSpent);
+                    timeSpent = response.data.timeSpent;
+                }
+            )
+        })
+
         const deleteOpButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-danger btn-sm", "Delete");
         // delete operation event
         deleteOpButton.addEventListener("click", function () {
