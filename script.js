@@ -77,6 +77,7 @@ function renderTask(taskId, title, description, status) {
         const finishButton = addDOMElement(headerRightDiv, "button", "btn btn-dark btn-sm js-task-open-only", "Finish");
     }
     const deleteButton = addDOMElement(headerRightDiv, "button", "btn btn-outline-danger btn-sm ml-2", "Delete");
+    // delete task event
     deleteButton.addEventListener("click", function () {
         apiDeleteTask(taskId).then(
             section.remove()
@@ -105,6 +106,7 @@ function renderTask(taskId, title, description, status) {
     inputField.placeholder = 'Operations description';
     const addOpButtonDiv = addDOMElement(formInputGroup, "div", "input-group-append");
     const addOpButton = addDOMElement(addOpButtonDiv, "button", "btn btn-info", "Add");
+
     // handling of adding new operation to existing task
     operationsForm.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -129,8 +131,13 @@ function renderOperation(operationsList, status, operationId, operationDescripti
         const plus15minButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+15m");
         const plus1hButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-success btn-sm mr-2", "+1h");
         const deleteOpButton = addDOMElement(buttonsDiv, "button", "btn btn-outline-danger btn-sm", "Delete");
+        // delete operation event
+        deleteOpButton.addEventListener("click", function () {
+            apiDeleteOperation(operationId).then(
+                li.remove()
+            )
+        })
     }
-
 }
 
 function apiCreateTask(title, description) {
@@ -155,7 +162,6 @@ function apiCreateTask(title, description) {
     )
 }
 
-// TODO in progress
 function apiCreateOperationForTask(taskId, description) {
     // uses POST method
     return fetch(
@@ -215,7 +221,6 @@ function apiDeleteOperation(operationId) {
         }
     )
 }
-
 
 
 /*
