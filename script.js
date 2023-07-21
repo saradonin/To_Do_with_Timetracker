@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     );
 
-    // adding new task event
+    // handling of adding new task
     const newTaskForm = document.querySelector(".js-task-adding-form");
     const newTaskTitle = newTaskForm.querySelector('[name="title"]');
     const newTaskDescription = newTaskForm.querySelector('[name="description"]');
@@ -200,6 +200,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log(response)
             }
         )
+        // reload to refresh task list
         location.reload()
     })
 });
