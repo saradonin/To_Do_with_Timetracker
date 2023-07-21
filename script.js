@@ -15,7 +15,7 @@ function apiListTasks() {
     ).then(
         function (resp) {
             if (!resp.ok) {
-                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                alert('An error occurred while listing tasks. Open devtools and tab Network/Network, and look for the cause.');
             }
             return resp.json();
         }
@@ -31,16 +31,16 @@ function apiListOperationsForTask(taskId) {
     ).then(
         function (resp) {
             if (!resp.ok) {
-                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                alert('An error occurred while listing operations. Open devtools and tab Network/Network, and look for the cause.');
             }
             return resp.json();
         }
     );
 }
 
-function convertTime(minutesTotal) {
-    let hours = Math.floor(minutesTotal / 60);
-    const min = minutesTotal % 60;
+function convertTime(timeSpent) {
+    let hours = Math.floor(timeSpent / 60);
+    const min = timeSpent % 60;
     if (hours === 0) {
         return min + "m"
     }
@@ -123,7 +123,7 @@ function renderOperation(operationsList, status, operationId, operationDescripti
 
     const li = addDOMElement(operationsList, "li", "list-group-item d-flex justify-content-between align-items-center");
     const descriptionDiv = addDOMElement(li, "div", null, operationDescription);
-    const time = addDOMElement(descriptionDiv, "span", "badge badge-success badge-pill ml-2", timeSpent + 'm');
+    const time = addDOMElement(descriptionDiv, "span", "badge badge-success badge-pill ml-2", timeSpent);
 
 
     if (status === "open") {
@@ -176,7 +176,7 @@ function apiCreateTask(title, description) {
     ).then(
         function (resp) {
             if (!resp.ok) {
-                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                alert('An error occurred while creating task. Open devtools and tab Network/Network, and look for the cause.');
             }
             return resp.json();
         }
@@ -198,7 +198,7 @@ function apiCreateOperationForTask(taskId, description) {
     ).then(
         function (resp) {
             if (!resp.ok) {
-                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                alert('An error occurred while creating operation. Open devtools and tab Network/Network, and look for the cause.');
             }
             return resp.json();
         }
@@ -219,7 +219,7 @@ function apiUpdateOperation(operationId, description, timeSpent) {
     ).then(
         function (resp) {
             if (!resp.ok) {
-                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                alert('An error occurred while updating task. Open devtools and tab Network/Network, and look for the cause.');
             }
             return resp.json();
         }
@@ -238,7 +238,7 @@ function apiDeleteTask(taskId) {
     ).then(
         function (resp) {
             if (!resp.ok) {
-                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                alert('An error occurred while deleting task. Open devtools and tab Network/Network, and look for the cause.');
             }
             return resp.json();
         }
@@ -257,7 +257,7 @@ function apiDeleteOperation(operationId) {
     ).then(
         function (resp) {
             if (!resp.ok) {
-                alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                alert('An error occurred while deleting operation. Open devtools and tab Network/Network, and look for the cause.');
             }
             return resp.json();
         }
