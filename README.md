@@ -41,3 +41,5 @@ Please replace `{task_id}` and `{operation_id}` with the actual task and operati
 
 - None. The app uses only HTML, CSS, and JavaScript.
 
+![to_do_app](https://github.com/saradonin/To_Do_with_Timetracker/assets/124811561/15bec51f-5229-45d0-90e6-6bc29d385f38)
+
